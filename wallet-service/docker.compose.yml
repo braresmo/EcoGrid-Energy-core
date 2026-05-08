@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  meter-service:
+    build:
+      context: .
+      dockerfile: meter-service/Dockerfile
+    container_name: meter-service
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - rabbitmq
+
+  marketplace-service:
+    build:
+      context: .
+      dockerfile: marketplace-service/Dockerfile
+    container_name: marketplace-service
+    ports:
+      - "5002:5000"
+    environment:
+      - FLASK_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - rabbitmq
+
+  wallet-service:
+    build:
+      context: .
+      dockerfile: wallet-service/Dockerfile
+    container_name: wallet-service
+    ports:
+      - "5003:5000"
+    environment:
+      - FLASK_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest

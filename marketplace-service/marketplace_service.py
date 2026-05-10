@@ -142,7 +142,7 @@ def on_payment_failed(ch, method, properties, body):
 
         updated_trade = _update_trade_status(
             trade_id,
-            TradingStatus.CANCELLED.value,
+            TradingStatus.PAYMENT_FAILED.value,
             payment_failed_at=datetime.utcnow().isoformat(),
             payment_failure_reason=data.get('reason')
         )
@@ -176,7 +176,7 @@ class TradingStatus(Enum):
     """Trading status enumerations"""
     PENDING = "pending"
     COMPLETED = "completed"
-    CANCELLED = "cancelled"
+    PAYMENT_FAILED = "PaymentFailed"
 
 
 @app.route('/health', methods=['GET'])
